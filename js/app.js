@@ -2,7 +2,11 @@
  * Create a list that holds all of your cards
  */
 
-
+//Reload page - restart game:
+let reloadButton = document.querySelector('.restart');
+reloadButton.addEventListener('click', function() {
+  window.location.reload();
+});
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -84,7 +88,7 @@ moves.textContent = move;
 function uncoverCard(event) {
   move++; //add one move after 2 cards have been clicked
   if ((move % 2) === 0) {
-    moves.textContent = move/2; //update displayed moves
+    moves.textContent = move / 2; //update displayed moves
   }
 
   if ((event.target.nodeName === 'LI')) {
