@@ -68,16 +68,23 @@ function closeCards(cards) {
   cards.length = 0;
   numberOfCards = 0;
 }
-//show Card functionality
+//show Card
 function showCard(target) {
   event.target.classList.add('open'); //uncover Card
   event.target.classList.add('show'); //by changing classList
   uncoveredCards[numberOfCards] = event.target; //store card in array
   numberOfCards++;
 }
+// how many moves?
+let move = 0;
+let moves = document.querySelector('.moves');
+moves.textContent = move;
 //main function for card-flip
 //as well as check for match
 function uncoverCard(event) {
+  move++; //add one move after card has been clicked
+  moves.textContent = move;//update displayed moves
+
   if ((event.target.nodeName === 'LI')) {
     if (uncoveredCards.length < 2) { //Only when an actual card is clicked
       showCard(event.target);
