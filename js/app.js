@@ -82,8 +82,10 @@ moves.textContent = move;
 //main function for card-flip
 //as well as check for match
 function uncoverCard(event) {
-  move++; //add one move after card has been clicked
-  moves.textContent = move;//update displayed moves
+  move++; //add one move after 2 cards have been clicked
+  if ((move % 2) === 0) {
+    moves.textContent = move/2; //update displayed moves
+  }
 
   if ((event.target.nodeName === 'LI')) {
     if (uncoveredCards.length < 2) { //Only when an actual card is clicked
