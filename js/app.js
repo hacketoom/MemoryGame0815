@@ -12,7 +12,7 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-  var currentIndex = array.length,
+  let currentIndex = array.length,
     temporaryValue, randomIndex;
 
   while (currentIndex !== 0) {
@@ -26,6 +26,22 @@ function shuffle(array) {
   return array;
 }
 
+//SHUFFLE card deck:
+let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
+let next = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
+shuffle(classes);
+shuffle(next);
+//shuffled array with 16 cards
+let shuffled = classes.concat(next);
+// find all cards
+let cards = document.querySelectorAll('.card');
+let k = 0;
+//add shuffled 'pictures' to all cards on deck
+for (let card of cards) {
+  card.firstElementChild.classList.add(shuffled[k]);
+  k++;
+}
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -37,11 +53,8 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-
+//get a reference to deck
 let deck = document.querySelector('.deck');
-//TESTEN
-//WORK IN PROGRESS
-
 //array to hold cards and counter variable
 let uncoveredCards = [];
 let numberOfCards = 0;
