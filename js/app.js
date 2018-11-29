@@ -17,7 +17,7 @@ reloadButton.addEventListener('click', function() {
 let startGameTime = performance.now(); //set start time on load
 let finishedGameTime = 0; //will hold time when game finished
 let numberOfMatches = 0; //counts number of matches
-let gameFinished = false;//before game is finished === false
+let gameFinished = false; //before game is finished === false
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -35,7 +35,7 @@ function shuffle(array) {
   return array;
 }
 
-let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle","fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
+let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle", "fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
 shuffle(classes);
 // find all cards
 let cards = document.querySelectorAll('.card');
@@ -69,6 +69,14 @@ let moves = document.querySelector('.moves');
 //initially set moves on site load
 moves.textContent = move;
 
+//show Card
+function showCard(target) {
+  event.target.classList.add('open'); //uncover Card
+  event.target.classList.add('show'); //by changing classList
+  uncoveredCards[numberOfCards] = event.target; //store card in array
+  numberOfCards++;
+}
+
 //used for closing cards
 function closeCards(cards) {
   for (let card of cards) {
@@ -79,12 +87,17 @@ function closeCards(cards) {
   numberOfCards = 0;
 }
 
-//show Card
-function showCard(target) {
-  event.target.classList.add('open'); //uncover Card
-  event.target.classList.add('show'); //by changing classList
-  uncoveredCards[numberOfCards] = event.target; //store card in array
-  numberOfCards++;
+//store stars in array
+let starPanel = document.querySelector('.stars');
+let stars = starPanel.children;
+
+//function for reducing the stars after a certain number of moves
+let starNumber = 2;//start with position '2' on the stars array
+
+function reduceStars(stars) {
+  stars[starNumber].firstElementChild.classList.add('fa-star-o');
+  stars[starNumber].firstElementChild.classList.remove('fa-star');
+  starNumber--;
 }
 
 //main function for card-flip
@@ -141,7 +154,16 @@ function uncoverCard(event) {
       }, 500);
     }
   }
-
+  //reducing number of stars after certain number of moves
+  if (move === 20) {
+    reduceStars(stars);
+  }
+  if (move === 60) {
+    reduceStars(stars);
+  }
+  if (move === 100) {
+    reduceStars(stars);
+  }
 }
 
 //adding an EventListener for whole card functionality
