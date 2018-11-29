@@ -13,6 +13,11 @@ reloadButton.addEventListener('click', function() {
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+//Measure playing time
+let startGameTime = performance.now(); //set start time
+let finishedGameTime = 0; //will hold time when game finished
+let numberOfMatches = 0; //counts number of matches
+let gameFinished = false;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -72,6 +77,7 @@ function closeCards(cards) {
   cards.length = 0;
   numberOfCards = 0;
 }
+
 //show Card
 function showCard(target) {
   event.target.classList.add('open'); //uncover Card
@@ -82,19 +88,24 @@ function showCard(target) {
 // how many moves?
 let move = 0;
 let moves = document.querySelector('.moves');
+//set moves on site load
 moves.textContent = move;
+
 //main function for card-flip
-//as well as check for match
+//as well as check for a match
 function uncoverCard(event) {
-  move++; //add one move after 2 cards have been clicked
-  if ((move % 2) === 0) {
-    moves.textContent = move / 2; //update displayed moves
-  }
 
   if ((event.target.nodeName === 'LI')) {
-    if (uncoveredCards.length < 2) { //Only when an actual card is clicked
+    move++; //add one move after 2 cards have been clicked
+    if ((move % 2) === 0) {
+      moves.textContent = move / 2; //update displayed moves
+    }
+
+    //show only two cards at once
+    if (uncoveredCards.length < 2) {
       showCard(event.target);
     }
+
     //after 2 cards have been clicked:
     if (uncoveredCards.length === 2) {
       //check if the pictures on the cards match:
@@ -106,13 +117,36 @@ function uncoverCard(event) {
           card.classList.remove('show');
           card.classList.add('match');
         }
-      }
-      //wait 1/2 second until closing cards - otherwise not visible
-      setTimeout(function() {
+
+        //increment number of matches
+        numberOfMatches++;
+
+        //define game finished after 8 matches
+        if (numberOfMatches === 8) {
+          gameFinished = true;
+        }
+
+        //show alert when game is finished
+        if (gameFinished) {
+          setTimeout(function() {
+            finishedGameTime = performance.now();
+            let wholetime = (finishedGameTime - startGameTime) / 1000;
+            alert("You played " + wholetime.toFixed(2) + " seconds");
+          }, 550);
+        }
+
+        //function needed here in order to reset the uncoveredCards array
         closeCards(uncoveredCards);
-      }, 500);
+
+      } else { //case: cards do not match
+        //wait 1/2 second until closing cards - otherwise not visible
+        setTimeout(function() {
+          closeCards(uncoveredCards);
+        }, 500);
+      }
     }
   }
 }
+
 //adding an EventListener for whole card functionality
 deck.addEventListener('click', uncoverCard);
