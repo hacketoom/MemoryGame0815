@@ -14,10 +14,10 @@ reloadButton.addEventListener('click', function() {
  *   - add each card's HTML to the page
  */
 //Measure playing time
-let startGameTime = performance.now(); //set start time
+let startGameTime = performance.now(); //set start time on load
 let finishedGameTime = 0; //will hold time when game finished
 let numberOfMatches = 0; //counts number of matches
-let gameFinished = false;
+let gameFinished = false;//before game is finished === false
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -35,19 +35,14 @@ function shuffle(array) {
   return array;
 }
 
-//SHUFFLE card deck:
-let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
-let next = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
+let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle","fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
 shuffle(classes);
-shuffle(next);
-//shuffled array with 16 cards
-let shuffled = classes.concat(next);
 // find all cards
 let cards = document.querySelectorAll('.card');
 let k = 0;
 //add shuffled 'pictures' to all cards on deck
 for (let card of cards) {
-  card.firstElementChild.classList.add(shuffled[k]);
+  card.firstElementChild.classList.add(classes[k]);
   k++;
 }
 
@@ -68,6 +63,12 @@ let deck = document.querySelector('.deck');
 let uncoveredCards = [];
 let numberOfCards = 0;
 
+// needed for counting moves:
+let move = 0;
+let moves = document.querySelector('.moves');
+//initially set moves on site load
+moves.textContent = move;
+
 //used for closing cards
 function closeCards(cards) {
   for (let card of cards) {
@@ -85,11 +86,6 @@ function showCard(target) {
   uncoveredCards[numberOfCards] = event.target; //store card in array
   numberOfCards++;
 }
-// how many moves?
-let move = 0;
-let moves = document.querySelector('.moves');
-//set moves on site load
-moves.textContent = move;
 
 //main function for card-flip
 //as well as check for a match
@@ -105,47 +101,47 @@ function uncoverCard(event) {
     if (uncoveredCards.length < 2) {
       showCard(event.target);
     }
-
-    //after 2 cards have been clicked:
-    if (uncoveredCards.length === 2) {
-      //check if the pictures on the cards match:
-      //AND if they are NOT the same card
-      if ((uncoveredCards[0].innerHTML == uncoveredCards[1].innerHTML) && (uncoveredCards[0] != uncoveredCards[1])) {
-        //if they match: make it show in the game by changing classes:
-        for (let card of uncoveredCards) {
-          card.classList.remove('open');
-          card.classList.remove('show');
-          card.classList.add('match');
-        }
-
-        //increment number of matches
-        numberOfMatches++;
-
-        //define game finished after 8 matches
-        if (numberOfMatches === 8) {
-          gameFinished = true;
-        }
-
-        //show alert when game is finished
-        if (gameFinished) {
-          setTimeout(function() {
-            finishedGameTime = performance.now();
-            let wholetime = (finishedGameTime - startGameTime) / 1000;
-            alert("You played " + wholetime.toFixed(2) + " seconds");
-          }, 550);
-        }
-
-        //function needed here in order to reset the uncoveredCards array
-        closeCards(uncoveredCards);
-
-      } else { //case: cards do not match
-        //wait 1/2 second until closing cards - otherwise not visible
-        setTimeout(function() {
-          closeCards(uncoveredCards);
-        }, 500);
+  }
+  //after 2 cards have been clicked:
+  if (uncoveredCards.length === 2) {
+    //check if the pictures on the cards match:
+    //AND if they are NOT the same card
+    if ((uncoveredCards[0].innerHTML == uncoveredCards[1].innerHTML) && (uncoveredCards[0] != uncoveredCards[1])) {
+      //if they match: make it show in the game by changing classes:
+      for (let card of uncoveredCards) {
+        card.classList.remove('open');
+        card.classList.remove('show');
+        card.classList.add('match');
       }
+
+      //increment number of matches
+      numberOfMatches++;
+
+      //define game finished after 8 matches
+      if (numberOfMatches === 8) {
+        gameFinished = true;
+      }
+
+      //show alert when game is finished
+      if (gameFinished) {
+        setTimeout(function() {
+          finishedGameTime = performance.now();
+          let wholetime = (finishedGameTime - startGameTime) / 1000;
+          alert("You played " + wholetime.toFixed(2) + " seconds");
+        }, 550);
+      }
+
+      //function needed here in order to reset the uncoveredCards array
+      closeCards(uncoveredCards);
+
+    } else { //case: cards do not match
+      //wait 1/2 second until closing cards - otherwise not visible
+      setTimeout(function() {
+        closeCards(uncoveredCards);
+      }, 500);
     }
   }
+
 }
 
 //adding an EventListener for whole card functionality
