@@ -14,7 +14,7 @@ reloadButton.addEventListener('click', function() {
  *   - add each card's HTML to the page
  */
 //Measure playing time
-let startGameTime = performance.now(); //set start time on load
+let startGameTime; //set start time on load
 let finishedGameTime = 0; //will hold time when game finished
 let numberOfMatches = 0; //counts number of matches
 let gameFinished = false; //before game is finished === false
@@ -64,10 +64,18 @@ let uncoveredCards = [];
 let numberOfCards = 0;
 
 // needed for counting moves:
-let move = 0;
+let numberOfMoves = 0;
 let moves = document.querySelector('.moves');
 //initially set moves on site load
-moves.textContent = move;
+moves.textContent = numberOfMoves;
+
+//Variables & new nodes needed for adding fields to Modal on winning the game
+let modalBody = document.querySelector('.modal-body');
+let wholetime
+let node1 = document.createElement('P');
+let node2 = document.createElement('P');
+let textnode1;
+let textnode2;
 
 //show Card
 function showCard(target) {
@@ -92,7 +100,7 @@ let starPanel = document.querySelector('.stars');
 let stars = starPanel.children;
 
 //function for reducing the stars after a certain number of moves
-let starNumber = 2;//start with position '2' on the stars array
+let starNumber = 2; //start with position '2' on the stars array
 
 function reduceStars(stars) {
   stars[starNumber].firstElementChild.classList.add('fa-star-o');
@@ -100,14 +108,18 @@ function reduceStars(stars) {
   starNumber--;
 }
 
+
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
+  if(numberOfMoves === 0) {
+    startGameTime = performance.now();
+  }
 
   if ((event.target.nodeName === 'LI')) {
-    move++; //add one move after 2 cards have been clicked
-    if ((move % 2) === 0) {
-      moves.textContent = move / 2; //update displayed moves
+    numberOfMoves++; //add one move after 2 cards have been clicked
+    if ((numberOfMoves % 2) === 0) {
+      moves.textContent = numberOfMoves / 2; //update displayed moves
     }
 
     //show only two cards at once
@@ -120,7 +132,7 @@ function uncoverCard(event) {
     //check if the pictures on the cards match:
     //AND if they are NOT the same card
     if ((uncoveredCards[0].innerHTML == uncoveredCards[1].innerHTML) && (uncoveredCards[0] != uncoveredCards[1])) {
-      //if they match: make it show in the game by changing classes:
+      //if they match: permanently uncover cards
       for (let card of uncoveredCards) {
         card.classList.remove('open');
         card.classList.remove('show');
@@ -135,13 +147,17 @@ function uncoverCard(event) {
         gameFinished = true;
       }
 
-      //show alert when game is finished
+      //show Modal when game is finished
       if (gameFinished) {
-        setTimeout(function() {
-          finishedGameTime = performance.now();
-          let wholetime = (finishedGameTime - startGameTime) / 1000;
-          alert("You played " + wholetime.toFixed(2) + " seconds");
-        }, 550);
+        finishedGameTime = performance.now();
+        wholetime = (finishedGameTime - startGameTime) / 1000;
+        textnode1 = document.createTextNode("You played " + wholetime.toFixed(2) + " seconds");
+        textnode2 = document.createTextNode("Stars: " + (starNumber + 1));
+        node1.appendChild(textnode1);
+        node2.appendChild(textnode2);
+        modalBody.appendChild(node1);
+        modalBody.appendChild(node2);
+        $('#winModal').modal('show');
       }
 
       //function needed here in order to reset the uncoveredCards array
@@ -155,13 +171,13 @@ function uncoverCard(event) {
     }
   }
   //reducing number of stars after certain number of moves
-  if (move === 20) {
+  if (numberOfMoves === 20) {
     reduceStars(stars);
   }
-  if (move === 60) {
+  if (numberOfMoves === 60) {
     reduceStars(stars);
   }
-  if (move === 100) {
+  if (numberOfMoves === 100) {
     reduceStars(stars);
   }
 }
