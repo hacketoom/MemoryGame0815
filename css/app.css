@@ -103,7 +103,11 @@ h1 {
     display: inline-block;
 }
 
-.score-panel .restart {
+.score-panel .time-panel {
     float: right;
-    cursor: pointer;
+    margin: 0 50px 0 0;
+}
+.score-panel .restart {
+  float: right;
+  cursor: pointer;
 }
