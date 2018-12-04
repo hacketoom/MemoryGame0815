@@ -152,8 +152,10 @@ function uncoverCard(event) {
       //show Modal when game is finished
       if (gameFinished) {
         finishedGameTime = performance.now();
-        wholetime = (finishedGameTime - startGameTime) / 1000; //calculating game time
-        textnode1 = document.createTextNode('You played ' + wholetime.toFixed(2) + ' seconds');
+        wholetime = (finishedGameTime - startGameTime); //calculating game time
+        let minutes = Math.floor((wholetime % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((wholetime % (1000 * 60)) / 1000);
+        textnode1 = document.createTextNode('You played ' + minutes + ' Minutes ' + seconds + ' Seconds');
         textnode2 = document.createTextNode('Stars: ' + (starNumber + 1));
         node1.appendChild(textnode1);
         node2.appendChild(textnode2);
@@ -186,7 +188,7 @@ function uncoverCard(event) {
     let now = performance.now();
 
     // Find the distance between now and the starting time
-    let distance = now - startGameTime;
+    let distance = now - startGameTime - 1000;
 
     // Time calculations for minutes and seconds
     let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -195,7 +197,7 @@ function uncoverCard(event) {
     // Output the result in the time panel
     document.querySelector(".time-panel").innerHTML = minutes + "m " + seconds + "s ";
     //Stop counter when game is finished
-    if(gameFinished) {
+    if (gameFinished) {
       clearInterval(panelTimer);
     }
   }, 1000);
