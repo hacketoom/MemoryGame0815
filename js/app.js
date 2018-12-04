@@ -108,7 +108,6 @@ function reduceStars(stars) {
   starNumber--;
 }
 
-
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
@@ -177,10 +176,16 @@ function uncoverCard(event) {
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
-  if (numberOfMoves === 100) {
-    reduceStars(stars);
-  }
+  // if (numberOfMoves === 100) {
+  //   reduceStars(stars);
+  // }
 }
 
 //adding an EventListener for whole card functionality
 deck.addEventListener('click', uncoverCard);
+
+//add reload button on modal
+let reloadButtonModal = document.querySelector('.reset-button');
+reloadButtonModal.addEventListener('click', function() {
+  window.location.reload();
+});
