@@ -34,10 +34,9 @@ function shuffle(array) {
 
   return array;
 }
-
+//Array of card values
 let classes = ['fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle', 'fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle'];
 shuffle(classes);
-// find all cards
 let cards = document.querySelectorAll('.card');
 let k = 0;
 //add shuffled 'pictures' to all cards on deck
@@ -109,6 +108,22 @@ function reduceStars(stars) {
   starNumber--;
 }
 
+//this function returns elapsed time since start
+function returnElapsedTime() {
+  // Get time of now
+  let now = performance.now();
+
+  // Find the distance between now and the starting time
+  let distance = now - startGameTime;
+
+  // Time calculations for minutes and seconds
+  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  return minutes + "m " + seconds + "s ";
+}
+
+let gameTime;
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
@@ -151,11 +166,8 @@ function uncoverCard(event) {
 
       //show Modal when game is finished
       if (gameFinished) {
-        finishedGameTime = performance.now();
-        wholetime = (finishedGameTime - startGameTime); //calculating game time
-        let minutes = Math.floor((wholetime % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((wholetime % (1000 * 60)) / 1000);
-        textnode1 = document.createTextNode('You played ' + minutes + ' Minutes ' + seconds + ' Seconds');
+        gameTime = returnElapsedTime();
+        textnode1 = document.createTextNode('You played ' + gameTime);
         textnode2 = document.createTextNode('Stars: ' + (starNumber + 1));
         node1.appendChild(textnode1);
         node2.appendChild(textnode2);
@@ -183,23 +195,16 @@ function uncoverCard(event) {
   }
   //Start timer in panel
   let panelTimer = setInterval(function() {
-
-    // Get time of now
-    let now = performance.now();
-
-    // Find the distance between now and the starting time
-    let distance = now - startGameTime - 1000;
-
-    // Time calculations for minutes and seconds
-    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Output the result in the time panel
-    document.querySelector(".time-panel").innerHTML = minutes + "m " + seconds + "s ";
-    //Stop counter when game is finished
     if (gameFinished) {
       clearInterval(panelTimer);
+      //when finished: sychnronize time with value in modal to avoid different values
+      document.querySelector(".time-panel").innerHTML = gameTime;
+    } else {
+      document.querySelector(".time-panel").innerHTML = returnElapsedTime();
     }
+    // let timeNow = returnTime();
+    // Output the result in the time panel
+    //Stop counter when game is finished
   }, 1000);
 }
 
