@@ -91,6 +91,7 @@ function closeCards(cards) {
     card.classList.remove('open');
     card.classList.remove('show');
   }
+  //reset array of cards
   cards.length = 0;
   numberOfCards = 0;
 }
@@ -99,9 +100,9 @@ function closeCards(cards) {
 let starPanel = document.querySelector('.stars');
 let stars = starPanel.children;
 
-//function for reducing the stars after a certain number of moves
 let starNumber = 2; //start with position '2' on the stars array
 
+//function for reducing the stars after a certain number of moves
 function reduceStars(stars) {
   stars[starNumber].firstElementChild.classList.add('fa-star-o');
   stars[starNumber].firstElementChild.classList.remove('fa-star');
@@ -111,12 +112,14 @@ function reduceStars(stars) {
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
-  if(numberOfMoves === 0) {
+  //start timer on first click
+  if (numberOfMoves === 0) {
     startGameTime = performance.now();
   }
-
+  //only clicks on cards
   if ((event.target.nodeName === 'LI')) {
-    numberOfMoves++; //add one move after 2 cards have been clicked
+    numberOfMoves++;
+    //add one move after 2 cards have been clicked
     if ((numberOfMoves % 2) === 0) {
       moves.textContent = numberOfMoves / 2; //update displayed moves
     }
@@ -149,7 +152,7 @@ function uncoverCard(event) {
       //show Modal when game is finished
       if (gameFinished) {
         finishedGameTime = performance.now();
-        wholetime = (finishedGameTime - startGameTime) / 1000;
+        wholetime = (finishedGameTime - startGameTime) / 1000; //calculating game time
         textnode1 = document.createTextNode('You played ' + wholetime.toFixed(2) + ' seconds');
         textnode2 = document.createTextNode('Stars: ' + (starNumber + 1));
         node1.appendChild(textnode1);
@@ -176,9 +179,6 @@ function uncoverCard(event) {
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
-  // if (numberOfMoves === 100) {
-  //   reduceStars(stars);
-  // }
 }
 
 //adding an EventListener for whole card functionality
