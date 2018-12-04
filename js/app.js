@@ -179,6 +179,26 @@ function uncoverCard(event) {
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
+  //Start timer in panel
+  let panelTimer = setInterval(function() {
+
+    // Get time of now
+    let now = performance.now();
+
+    // Find the distance between now and the starting time
+    let distance = now - startGameTime;
+
+    // Time calculations for minutes and seconds
+    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Output the result in the time panel
+    document.querySelector(".time-panel").innerHTML = minutes + "m " + seconds + "s ";
+    //Stop counter when game is finished
+    if(gameFinished) {
+      clearInterval(panelTimer);
+    }
+  }, 1000);
 }
 
 //adding an EventListener for whole card functionality
