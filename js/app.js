@@ -35,7 +35,7 @@ function shuffle(array) {
   return array;
 }
 
-let classes = ["fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle", "fa-diamond", "fa-paper-plane-o", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bomb", "fa-bicycle"];
+let classes = ['fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle', 'fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle'];
 shuffle(classes);
 // find all cards
 let cards = document.querySelectorAll('.card');
@@ -151,8 +151,8 @@ function uncoverCard(event) {
       if (gameFinished) {
         finishedGameTime = performance.now();
         wholetime = (finishedGameTime - startGameTime) / 1000;
-        textnode1 = document.createTextNode("You played " + wholetime.toFixed(2) + " seconds");
-        textnode2 = document.createTextNode("Stars: " + (starNumber + 1));
+        textnode1 = document.createTextNode('You played ' + wholetime.toFixed(2) + ' seconds');
+        textnode2 = document.createTextNode('Stars: ' + (starNumber + 1));
         node1.appendChild(textnode1);
         node2.appendChild(textnode2);
         modalBody.appendChild(node1);
