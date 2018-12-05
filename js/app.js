@@ -78,9 +78,9 @@ let textnode2;
 
 //show Card
 function showCard(target) {
-  event.target.classList.add('open'); //uncover Card
-  event.target.classList.add('show'); //by changing classList
-  uncoveredCards[numberOfCards] = event.target; //store card in array
+  target.classList.add('open'); //uncover Card
+  target.classList.add('show'); //by changing classList
+  uncoveredCards[numberOfCards] = target; //store card in array
   numberOfCards++;
 }
 
@@ -110,7 +110,7 @@ function reduceStars(stars) {
 
 //this function returns elapsed time since start
 function returnElapsedTime() {
-  // Get time of now
+
   let now = performance.now();
 
   // Find the distance between now and the starting time
@@ -131,6 +131,7 @@ function uncoverCard(event) {
   if (numberOfMoves === 0) {
     startGameTime = performance.now();
   }
+
   //only clicks on cards
   if ((event.target.nodeName === 'LI')) {
     numberOfMoves++;
@@ -144,6 +145,7 @@ function uncoverCard(event) {
       showCard(event.target);
     }
   }
+
   //after 2 cards have been clicked:
   if (uncoveredCards.length === 2) {
     //check if the pictures on the cards match:
@@ -186,25 +188,29 @@ function uncoverCard(event) {
       }, 500);
     }
   }
+
   //reducing number of stars after certain number of moves
   if (numberOfMoves === 20) {
     reduceStars(stars);
   }
+
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
+
   //Start timer in panel
   let panelTimer = setInterval(function() {
     if (gameFinished) {
+      //Stop counter when game is finished
       clearInterval(panelTimer);
       //when finished: sychnronize time with value in modal to avoid different values
+      //because this function is firing a bit later after the modal is shown
+      // Output the result in the time panel
       document.querySelector(".time-panel").innerHTML = gameTime;
     } else {
+      // Output the result in the time panel
       document.querySelector(".time-panel").innerHTML = returnElapsedTime();
     }
-    // let timeNow = returnTime();
-    // Output the result in the time panel
-    //Stop counter when game is finished
   }, 1000);
 }
 
