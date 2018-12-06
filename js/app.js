@@ -124,11 +124,13 @@ function returnElapsedTime() {
 }
 
 let gameTime;
+let started = false;
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
   //start timer on first click
-  if (numberOfMoves === 0) {
+  if ((numberOfMoves === 0) && (event.target.nodeName === 'LI')) {
+    started = true;
     startGameTime = performance.now();
   }
 
@@ -197,21 +199,22 @@ function uncoverCard(event) {
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
-
-  //Start timer in panel
-  let panelTimer = setInterval(function() {
-    if (gameFinished) {
-      //Stop counter when game is finished
-      clearInterval(panelTimer);
-      //when finished: sychnronize time with value in modal to avoid different values
-      //because this function is firing a bit later after the modal is shown
-      // Output the result in the time panel
-      document.querySelector(".time-panel").innerHTML = gameTime;
-    } else {
-      // Output the result in the time panel
-      document.querySelector(".time-panel").innerHTML = returnElapsedTime();
-    }
-  }, 1000);
+  if (started) {//make sure the timer only starts when card is clicked
+    //Start timer in panel
+    let panelTimer = setInterval(function() {
+      if (gameFinished) {
+        //Stop counter when game is finished
+        clearInterval(panelTimer);
+        //when finished: sychnronize time with value in modal to avoid different values
+        //because this function is firing a bit later after the modal is shown
+        // Output the result in the time panel
+        document.querySelector(".time-panel").innerHTML = gameTime;
+      } else {
+        // Output the result in the time panel
+        document.querySelector(".time-panel").innerHTML = returnElapsedTime();
+      }
+    }, 1000);
+  }
 }
 
 //adding an EventListener for whole card functionality
