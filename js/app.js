@@ -18,6 +18,8 @@ let startGameTime; //set start time on load
 let finishedGameTime = 0; //will hold time when game finished
 let numberOfMatches = 0; //counts number of matches
 let gameFinished = false; //before game is finished === false
+let gameTime; //holds elapsed game time
+let started = false; //set to false initially before first card has been clicked
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -35,7 +37,23 @@ function shuffle(array) {
   return array;
 }
 //Array of card values
-let classes = ['fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle', 'fa-diamond', 'fa-paper-plane-o', 'fa-bolt', 'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bomb', 'fa-bicycle'];
+let classes = ['fa-diamond',
+  'fa-paper-plane-o',
+  'fa-bolt', 'fa-cube',
+  'fa-anchor',
+  'fa-leaf',
+  'fa-bomb',
+  'fa-bicycle',
+  'fa-diamond',
+  'fa-paper-plane-o',
+  'fa-bolt',
+  'fa-cube',
+  'fa-anchor',
+  'fa-leaf',
+  'fa-bomb',
+  'fa-bicycle'
+];
+
 shuffle(classes);
 let cards = document.querySelectorAll('.card');
 let k = 0;
@@ -123,8 +141,7 @@ function returnElapsedTime() {
   return minutes + "m " + seconds + "s ";
 }
 
-let gameTime;
-let started = false;
+
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
@@ -199,13 +216,13 @@ function uncoverCard(event) {
   if (numberOfMoves === 60) {
     reduceStars(stars);
   }
-  if (started) {//make sure the timer only starts when card is clicked
-    //Start timer in panel
+  if (started) { //make sure the timer display only gets updated when internal timer has been started
+    //Display timer in panel
     let panelTimer = setInterval(function() {
       if (gameFinished) {
         //Stop counter when game is finished
         clearInterval(panelTimer);
-        //when finished: sychnronize time with value in modal to avoid different values
+        //when finished: synchronize time with value in modal to avoid different values
         //because this function is firing a bit later after the modal is shown
         // Output the result in the time panel
         document.querySelector(".time-panel").innerHTML = gameTime;
