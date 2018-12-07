@@ -141,19 +141,25 @@ function returnElapsedTime() {
   return minutes + "m " + seconds + "s ";
 }
 
+//this variable holds the last clicked card:
+let clickedCard;
 
 //main function for card-flip
 //as well as check for a match
 function uncoverCard(event) {
   //start timer on first click
+  //last card that has been clicked
+  clickedCard = event.target;
+
   if ((numberOfMoves === 0) && (event.target.nodeName === 'LI')) {
+    numberOfMoves = 2;
     started = true;
     startGameTime = performance.now();
   }
 
   //only clicks on cards
-  if ((event.target.nodeName === 'LI')) {
-    numberOfMoves++;
+  //only do that as long as the game is not finished
+  if ((event.target.nodeName === 'LI') && (gameFinished === false)) {
     //add one move after 2 cards have been clicked
     if ((numberOfMoves % 2) === 0) {
       moves.textContent = numberOfMoves / 2; //update displayed moves
@@ -161,7 +167,11 @@ function uncoverCard(event) {
 
     //show only two cards at once
     if (uncoveredCards.length < 2) {
-      showCard(event.target);
+      //only proceed if another card than the one already clicked has been chosen
+      if ((uncoveredCards.length <= 1) && (uncoveredCards[0] != clickedCard)) {
+        numberOfMoves++;
+        showCard(event.target);
+      }
     }
   }
 
