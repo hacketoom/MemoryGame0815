@@ -169,6 +169,7 @@ function uncoverCard(event) {
     if (uncoveredCards.length < 2) {
       //only proceed if another card than the one already clicked has been chosen
       if ((uncoveredCards.length <= 1) && (uncoveredCards[0] != clickedCard)) {
+        console.log(event.target);
         numberOfMoves++;
         showCard(event.target);
       }
